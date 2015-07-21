@@ -153,7 +153,7 @@ public class DataSource {
      * @param airportId
      * @return Name of AFD file
      */
-    public String findAFD(String airportId) {
+    public LinkedList<String> findAFD(String airportId) {
         return dbHelper.findAFD(airportId);
     }
 
