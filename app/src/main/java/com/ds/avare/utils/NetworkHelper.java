@@ -327,7 +327,7 @@ public class NetworkHelper {
         else if(file.equals("ratings.zip")) {
             return(root + "/" + file);
         }
-        return(root + vers + "/" + file);
+        return(root + vers + "_newproj/" + file);
     }
 
     /*
