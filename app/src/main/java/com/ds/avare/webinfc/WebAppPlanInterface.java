@@ -1044,9 +1044,6 @@ public class WebAppPlanInterface implements Observer {
 				if(d.getType().equals(Destination.BASE)) {
 					planf += "K" + d.getID() + ",";
 				}
-				if(d.getType().equals(Destination.NAVAID)) {
-					planf += d.getID() + ",";
-				}
 			}
 			if(planf.equals("")) {
 				Message m = mHandler.obtainMessage(MSG_ERROR, (Object)mContext.getString(R.string.NotamsPlan));

@@ -620,7 +620,21 @@ public class NetworkHelper {
         } catch (Exception e) {
 
         }
-        return ret;
+
+        // NOTAMS are in form <PRE></PRE>. Parse them, and convert \n to BR
+        String notams = "";
+        if(ret != null) {
+            String rets[] = ret.split("\\<PRE\\>");
+            for (String ret1 : rets) {
+                if(ret1.contains("</PRE>")) {
+                    String parsed[] = ret1.split("</PRE>");
+                    notams += parsed[0] + "\n\n";
+                }
+            }
+            notams = notams.replaceAll("(\r\n|\n)", "<br />");
+        }
+
+        return notams;
     }
 }
 
