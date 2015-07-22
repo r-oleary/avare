@@ -1963,8 +1963,8 @@ public class LocationView extends View implements MultiTouchObjectCanvas<Object>
                 double elev = -1;
                 // Load only if needed.
                 if(null != elevBitmap) {
-                    int x = (int)Math.round(t.getOffsetX(mGpsParams.getLongitude()));
-                    int y = (int)Math.round(t.getOffsetY(mGpsParams.getLatitude()));
+                    int x = (int)Math.round(t.getOffsetX(lon)) + elevBitmap.getWidth() / 2;
+                    int y = (int)Math.round(t.getOffsetY(lat)) + elevBitmap.getHeight() / 2;
                     if(elevBitmap.getBitmap() != null) {
                     
                         if(x < elevBitmap.getBitmap().getWidth()

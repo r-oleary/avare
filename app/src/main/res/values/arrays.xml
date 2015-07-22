@@ -765,15 +765,15 @@ Redistribution and use in source and binary forms, with or without modification,
     
     <string-array name="resFilesHeli">
         <item>GrandCanyon</item>
-        <item>BaltimoreWashingtonHeli9Front</item>
-        <item>BostonHeli6Front</item>
-        <item>ChicagoHeli6Front</item>
-        <item>Dallas-FtWorthHeli5Front</item>
-        <item>DetroitHeli1</item>
+        <item>BaltimoreWashingtonHeli</item>
+        <item>BostonHeli</item>
+        <item>ChicagoHeli</item>
+        <item>Dallas-FtWorthHeli</item>
+        <item>DetroitHeli</item>
         <item>GulfCoastHel-WAC27</item>
-        <item>HoustonHeli7</item>
-        <item>LosAngelesHeli9</item>
-        <item>NewYorkHeli10Front</item>
+        <item>HoustonHeli</item>
+        <item>LosAngelesHeli</item>
+        <item>NewYorkHeli</item>
     </string-array>
     
     <string-array name="ChartType">
@@ -799,7 +799,7 @@ Redistribution and use in source and binary forms, with or without modification,
         <item>.png</item>
         <item>.jpg</item>
         <item>.jpg</item>
-        <item>.jpg</item>
+        <item>.png</item>
     </string-array>    
     
     <string-array name="ChartTypeValues">
