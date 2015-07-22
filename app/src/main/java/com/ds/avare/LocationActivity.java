@@ -30,6 +30,7 @@ import com.ds.avare.instruments.FuelTimer;
 import com.ds.avare.place.Airport;
 import com.ds.avare.place.Destination;
 import com.ds.avare.place.Plan;
+import com.ds.avare.shapes.Tile;
 import com.ds.avare.storage.Preferences;
 import com.ds.avare.storage.StringPreference;
 import com.ds.avare.touch.GestureInterface;
@@ -544,7 +545,7 @@ public class LocationActivity extends Activity implements Observer {
                 /*
                  * Contrast bars only in terrain view
                  */
-                if(mPref.getChartType().equals("6")) {
+                if(mPref.getChartType().equals(Tile.ELEVATION_INDEX)) {
                     mBar.setVisibility(View.VISIBLE);
                 }
                 else {
@@ -1210,7 +1211,7 @@ public class LocationActivity extends Activity implements Observer {
         /*
          * Contrast bars only in terrain view
          */
-        if(mPref.getChartType().equals("5")) {
+        if(mPref.getChartType().equals(Tile.ELEVATION_INDEX)) {
             mBar.setVisibility(View.VISIBLE);
         }
         else {

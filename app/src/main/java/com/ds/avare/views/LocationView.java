@@ -724,7 +724,7 @@ public class LocationView extends View implements MultiTouchObjectCanvas<Object>
                      */
                     Helper.invertCanvasColors(mPaint);
                 }
-                else if(mPref.getChartType().equals("5")) {
+                else if(mPref.getChartType().equals(Tile.ELEVATION_INDEX)) {
                     /*
                      * Terrain
                      */

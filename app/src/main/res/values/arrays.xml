@@ -796,7 +796,7 @@ Redistribution and use in source and binary forms, with or without modification,
         <item>.png</item>
         <item>.png</item>
         <item>.png</item>
-        <item>.jpg</item>
+        <item>.png</item>
         <item>.jpg</item>
         <item>.jpg</item>
         <item>.jpg</item>
@@ -826,20 +826,6 @@ Redistribution and use in source and binary forms, with or without modification,
         <item>9</item>
         <item>11</item>
         <item>12</item>
-    </string-array>    
-    
-    <string-array name="ChartDbNames">
-        <item>maps.sec.db</item>
-        <item>maps.tac.db</item>
-        <item>maps.wac.db</item>
-        <item>maps.el.db</item>
-        <item>maps.eh.db</item>
-        <item>maps.elv.db</item>
-        <item>maps.rel.db</item>
-        <item>maps.topo.db</item>
-        <item>maps.oth.db</item>
-        <item>maps.ea.db</item>
-        <item>procedures.db</item>
     </string-array>    
     
     <string-array name="UnitsD">

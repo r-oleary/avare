@@ -29,7 +29,7 @@ public class Tile {
 	
 	// This is from arrays.xml. This should not be retrieved "cleverly" from arrays.xml 
 	// because translation will mess it up
-	private static final String ELEVATION_INDEX = "6";
+	public static final String ELEVATION_INDEX = "6";
 	
     /**
      * 
