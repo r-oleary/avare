@@ -116,6 +116,6 @@ public class Origin {
         double latu = lat + nm / 60.0 / 2.0;
 
         // return absolute distance
-        return (int)Math.round(getOffsetY(latl) - getOffsetY(latu));
+        return (int)Math.round(getOffsetY(latl) - getOffsetY(latu) * mScale);
     }
 }
