@@ -130,7 +130,7 @@ public class Radar {
     /**
      * Draw on map screen
      */
-    public void draw(Canvas canvas, Paint paint, Origin origin, Scale scale, float px, float py) {
+    public void draw(Canvas canvas, Paint paint, Origin origin) {
         
         if(null == mBitmap) {
             return;
