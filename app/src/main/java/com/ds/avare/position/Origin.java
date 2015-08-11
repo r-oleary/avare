@@ -111,16 +111,11 @@ public class Origin {
      */
     public int getPixelsInNmAtLatitude(double nm, double lat) {
 
-        // first find meters at that latitude
-        double my = Epsg900913.latToMeters(lat);
-        // now find meters around that latitude for given distance
-        double my1 = my + nm * Preferences.NM_TO_KM * 1000 / 2.0;
-        double my2 = my - nm * Preferences.NM_TO_KM * 1000 / 2.0;
-        // now convert to pixels with scale
-        double px1 = Epsg900913.xMetersToPixels(mZoom, my1) * mScale;
-        double px2 = Epsg900913.xMetersToPixels(mZoom, my2) * mScale;
+        // 60 miles per degree latitude, half up, half down
+        double latl = lat - nm / 60.0 / 2.0;
+        double latu = lat + nm / 60.0 / 2.0;
 
         // return absolute distance
-        return (int)Math.round(Math.abs(px1 - px2));
+        return (int)Math.round(getOffsetY(latl) - getOffsetY(latu));
     }
 }

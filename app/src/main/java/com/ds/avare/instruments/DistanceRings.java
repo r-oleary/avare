@@ -196,12 +196,6 @@ public class DistanceRings {
         mRings[3] = 0;
         
         /*
-         * Find pixels per nautical mile
-         * ZK XXX: Fix this, get actual NM pixels instead of 1.
-         */
-        float pixPerNm = origin.getPixelsInNmAtLatitude(1, lat);
-        
-        /*
          * Conversion factor for pixPerNm in case we are configured in some other units
          */
         double fac = 1;
@@ -250,15 +244,15 @@ public class DistanceRings {
             /*
              * its / 60 as units is in minutes
              */
-            mRings[RING_SPEED] = (float) ((float)(speed / 60) * pixPerNm * mPref.getTimerRingSize() / fac); 
+            mRings[RING_SPEED] = (float) ((float)origin.getPixelsInNmAtLatitude((speed / 60) * mPref.getTimerRingSize() / fac, lat));
         }
 
         /*
          * Calculate the radius of the 3 rings to display
          */
-        mRings[RING_INNER]  = (float)(pixPerNm * RING_INNER_SIZE[ringScale] / fac);
-        mRings[RING_MIDDLE] = (float)(pixPerNm * RING_MIDDLE_SIZE[ringScale] / fac);
-        mRings[RING_OUTER]  = (float)(pixPerNm * RING_OUTER_SIZE[ringScale] / fac);
+        mRings[RING_INNER]  = (float)(origin.getPixelsInNmAtLatitude(RING_INNER_SIZE[ringScale] / fac, lat));
+        mRings[RING_MIDDLE] = (float)(origin.getPixelsInNmAtLatitude(RING_MIDDLE_SIZE[ringScale] / fac, lat));
+        mRings[RING_OUTER]  = (float)(origin.getPixelsInNmAtLatitude(RING_OUTER_SIZE[ringScale] / fac, lat));
         
         mRingsText[RING_INNER]  = String.format("%d", RING_INNER_SIZE[ringScale]);
         mRingsText[RING_MIDDLE] = String.format("%d", RING_MIDDLE_SIZE[ringScale]);
