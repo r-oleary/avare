@@ -280,7 +280,7 @@ public class Tile {
      * 
      * @return
      */
-    private Epsg900913 getProjection() {
+    public Epsg900913 getProjection() {
     	return mProj;
     }
     
@@ -288,7 +288,7 @@ public class Tile {
      * 
      * @return
      */
-    private double getZoom() {
+    public double getZoom() {
     	return mZoom;
     }
 

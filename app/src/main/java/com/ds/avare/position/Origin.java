@@ -12,7 +12,12 @@ Redistribution and use in source and binary forms, with or without modification,
 
 package com.ds.avare.position;
 
+
+import android.util.Log;
+
 import com.ds.avare.gps.GpsParams;
+import com.ds.avare.shapes.Tile;
+import com.ds.avare.utils.BitmapHolder;
 
 /**
  * A class that keeps lon/lat pair of what is shown.
@@ -21,15 +26,15 @@ import com.ds.avare.gps.GpsParams;
  */
 public class Origin {
 
+    // latitude and longitude of center of screen
     private double mLonC;
     private double mLatC;
+    // latitude and longitude of upper left of screen
     private double mLonL;
-    private double mLonR;
     private double mLatU;
-    private double mLatL;
-    private double mScaleX;
-    private double mScaleY;
-    
+    private double mZoom;
+    private double mScale;
+
     /**
      * 
      */
@@ -40,36 +45,19 @@ public class Origin {
     /**
      * 
      * @param params
-     * @param scale
      * @param pan
-     * @param px
-     * @param py
-     * @param width
-     * @param height
      */
-    public void update(GpsParams params, Scale scale, Pan pan, double px, double py,
-            int width, int height) {
-
-        /*
-         * Calculate all coordinates of the chart under view
-         */
-        mScaleX = px / scale.getScaleFactor();
-        mScaleY = py / scale.getScaleCorrected();
-                
-        double loc0x =
-            pan.getMoveX() * scale.getScaleFactor();
-        
-        double loc0y = 
-            pan.getMoveY() * scale.getScaleCorrected();
-        
-        mLonC = params.getLongitude() - loc0x * mScaleX;
-        mLatC = params.getLatitude() - loc0y * mScaleY; 
-        
-        mLonL = mLonC - (width / 2) * mScaleX;
-        mLonR = mLonC + (width / 2) * mScaleX;
-
-        mLatU = mLatC - (height / 2) * mScaleY;
-        mLatL = mLatC + (height / 2) * mScaleY;
+    public void update(Tile currentTile, int width, int height, GpsParams params, Pan pan, Scale scale) {
+        if(currentTile == null) {
+            return;
+        }
+        mScale = 1.0 / (scale.getScaleFactor() * scale.getMacroFactor());
+        mZoom = currentTile.getZoom();
+        mLatC = Epsg900913.getLatitudeOf(-pan.getMoveY() * mScale, params.getLatitude(), mZoom);
+        mLonC = Epsg900913.getLongitudeOf(-pan.getMoveX() * mScale, params.getLongitude(), mZoom);
+        mLatU = Epsg900913.getLatitudeOf(-(pan.getMoveY() + height / 2) * mScale, params.getLatitude(), mZoom);
+        mLonL = Epsg900913.getLongitudeOf(-(pan.getMoveX() + width / 2) * mScale, params.getLongitude(), mZoom);
+        Log.d("-------------", ""  + mLatU + " " + mLatC + " " + mScale);
     }
 
     /**
@@ -77,7 +65,7 @@ public class Origin {
      * @return
      */
     public double getLongitudeOf(double of) {
-        return mLonL + of * mScaleX;
+        return Epsg900913.getLongitudeOf(of, mLonL, mZoom);
     }
     
     /**
@@ -85,102 +73,36 @@ public class Origin {
      * @return
      */
     public double getLatitudeOf(double of) {
-        return mLatU + of * mScaleY;
+        return Epsg900913.getLatitudeOf(of, mLatU, mZoom);
     }
 
     /**
-     * 
+     * double The X offset on the screen of the given longitude
+     */
+    public double getOffsetX(double lon) {
+        return Epsg900913.getOffsetX(mLonL, lon, mZoom);
+    }
+
+    /**
+     * double The Y offset on the screen of the given latitude
+     */
+    public double getOffsetY(double lat) {
+        return Epsg900913.getOffsetY(mLatU, lat, mZoom);
+    }
+
+    /**
+     *
      * @return
      */
     public double getLongitudeCenter() {
         return mLonC;
     }
-    
+
     /**
-     * 
+     *
      * @return
      */
     public double getLatitudeCenter() {
         return mLatC;
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public double getLongitudeLeft() {
-        return mLonL;
-    }
-    
-    /**
-     * 
-     * @return
-     */
-    public double getLatitudeUpper() {
-        return mLatU;
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public double getLongitudeRight() {
-        return mLonR;
-    }
-    
-    /**
-     * 
-     * @return
-     */
-    public double getLatitudeLower() {
-        return mLatL;
-    }
-    
-    /**
-     * @param
-     * double longitude
-     * @return
-     * double The X offset on the screen of the given longitude
-     */
-    public double getOffsetX(double lon) {
-        double diff = lon - mLonL;
-        return diff / mScaleX;
-    }
-
-    /**
-     * @param
-     * double latitude
-     * @return
-     * double The Y offset on the screen of the given latitude
-     */
-    public double getOffsetY(double lat) {
-        double diff = lat - mLatU;
-        return diff / mScaleY;
-    }
-
-    /** Is the position passed to the function within the range of the 
-    * current display panel
-    *
-    * @param c The coordinate to check against the current display frame
-    * @return true if the value is on the display, false if not
-    */
-    public boolean isInDisplayRange(Coordinate c){
-    	if(c.getLongitude() < mLonL) {
-    		return false;
-        }
-    	
-    	if(c.getLongitude() > mLonR) {
-    		return false;
-        }
-    	
-    	if(c.getLatitude() > mLatU) {
-    		return false;
-        }
-    	
-    	if(c.getLatitude() < mLatL) {
-    		return false;
-        }
-
-    	return true;
     }
 }

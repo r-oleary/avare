@@ -323,9 +323,7 @@ public class LocationView extends View implements MultiTouchObjectCanvas<Object>
      * 
      */
     private void updateCoordinates() {
-        mOrigin.update(mGpsParams, mScale, mPan,
-                mMovement.getLongitudePerPixel(), mMovement.getLatitudePerPixel(),
-                getWidth(), getHeight()); 
+        mOrigin.update(mGpsTile, getWidth(), getHeight(), mGpsParams, mPan, mScale);
     }
 
     /**

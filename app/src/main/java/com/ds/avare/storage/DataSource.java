@@ -316,4 +316,13 @@ public class DataSource {
 	public LinkedList<String> findRatings(String name) {
     	return dbHelper.findRatings(name);
 	}
+
+    /**
+     *
+     * @param name
+     * @return
+     */
+    public String getTileZipName(String name) {
+        return dbHelper.findTileZipName(name);
+    }
 }
