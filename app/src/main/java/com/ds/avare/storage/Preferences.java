@@ -92,7 +92,6 @@ public class Preferences {
 
     public static double NM_TO_MI = 1.15078;
     public static double NM_TO_KM = 1.852;
-    public static double NM_TO_LATITUDE = 1.0 / 60.0;
     public static double MS_TO_KT = 1.94384;
 
     /**

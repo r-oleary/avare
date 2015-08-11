@@ -15,6 +15,7 @@ package com.ds.avare.position;
 
 import com.ds.avare.gps.GpsParams;
 import com.ds.avare.shapes.Tile;
+import com.ds.avare.storage.Preferences;
 
 /**
  * A class that keeps lon/lat pair of what is shown.
@@ -50,6 +51,7 @@ public class Origin {
         }
         mScale = scale.getScaleFactor();
         mZoom = currentTile.getZoom();
+        // Get top and center of scrren lat/lon using projection
         mLatScreenCenter = Epsg900913.getLatitudeOf(-pan.getMoveY(), params.getLatitude(), mZoom);
         mLonScreenCenter = Epsg900913.getLongitudeOf(-pan.getMoveX(), params.getLongitude(), mZoom);
         mLatScreenTop = Epsg900913.getLatitudeOf(-pan.getMoveY() - height / 2 / mScale, params.getLatitude(), mZoom);
@@ -100,5 +102,25 @@ public class Origin {
      */
     public double getLatitudeCenter() {
         return mLatScreenCenter;
+    }
+
+
+    /**
+     * Find number of pixels in given NM at given latitude
+     * @return
+     */
+    public int getPixelsInNmAtLatitude(double nm, double lat) {
+
+        // first find meters at that latitude
+        double my = Epsg900913.latToMeters(lat);
+        // now find meters around that latitude for given distance
+        double my1 = my + nm * Preferences.NM_TO_KM * 1000 / 2.0;
+        double my2 = my - nm * Preferences.NM_TO_KM * 1000 / 2.0;
+        // now convert to pixels with scale
+        double px1 = Epsg900913.xMetersToPixels(mZoom, my1) * mScale;
+        double px2 = Epsg900913.xMetersToPixels(mZoom, my2) * mScale;
+
+        // return absolute distance
+        return (int)Math.round(Math.abs(px1 - px2));
     }
 }

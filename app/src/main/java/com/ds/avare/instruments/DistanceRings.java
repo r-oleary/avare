@@ -106,7 +106,7 @@ public class DistanceRings {
         
          // Calculate the size of distance and speed rings
         double currentSpeed = gpsParams.getSpeed();
-        calculateRings(mContext, scale, move, currentSpeed);
+        calculateRings(mContext, scale, origin, gpsParams.getLatitude(), currentSpeed);
 
         // Get our current position. That will be the center of all the rings
         float x = (float) (origin.getOffsetX(gpsParams.getLongitude()));
@@ -188,7 +188,7 @@ public class DistanceRings {
      * @param speed
      */
     public void calculateRings(Context context,
-            Scale scale, Movement movement, double speed) {
+            Scale scale, Origin origin, double lat, double speed) {
         
         mRings[0] = 0;
         mRings[1] = 0;
@@ -197,8 +197,9 @@ public class DistanceRings {
         
         /*
          * Find pixels per nautical mile
+         * ZK XXX: Fix this, get actual NM pixels instead of 1.
          */
-        float pixPerNm = movement.getNMPerLatitude(scale);
+        float pixPerNm = origin.getPixelsInNmAtLatitude(1, lat);
         
         /*
          * Conversion factor for pixPerNm in case we are configured in some other units

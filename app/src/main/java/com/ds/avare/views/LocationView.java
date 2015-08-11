@@ -636,17 +636,14 @@ public class LocationView extends View implements MultiTouchObjectCanvas<Object>
          */
         if((!force) && (mGpsTile != null)) {
             double offsets[] = new double[2];
-            double p[] = new double[2];
-                                        
+
             if(mGpsTile.within(mGpsParams.getLongitude(), mGpsParams.getLatitude())) {
                 /*
                  * We are within same tile no need for query.
                  */
             	offsets[0] = mGpsTile.getOffsetX(mGpsParams.getLongitude());
             	offsets[1] = mGpsTile.getOffsetY(mGpsParams.getLatitude());
-            	p[0] = mGpsTile.getPx();
-            	p[1] = mGpsTile.getPy();
-                mMovement = new Movement(offsets, p);
+                mMovement = new Movement(offsets);
                 postInvalidate();
                 return;
             }
@@ -801,12 +798,12 @@ public class LocationView extends View implements MultiTouchObjectCanvas<Object>
             mPaint.setShadowLayer(0, 0, 0, 0);
             Style style = mPaint.getStyle();
             mPaint.setStyle(Style.STROKE);
-            float radius = Math.abs((float)((GameTFR.RADIUS_NM * Preferences.NM_TO_LATITUDE) * (1.0 / mMovement.getLatitudePerPixel()) * mScale.getScaleCorrected()));
             for(int shape = 0; shape < GameTFR.GAME_TFR_COORDS.length; shape++) {
                 double lat = GameTFR.GAME_TFR_COORDS[shape][0];
                 double lon = GameTFR.GAME_TFR_COORDS[shape][1];
                 float x = (float)mOrigin.getOffsetX(lon);
                 float y = (float)mOrigin.getOffsetY(lat);
+                float radius = mOrigin.getPixelsInNmAtLatitude(GameTFR.RADIUS_NM, lat);
                 canvas.drawCircle(x, y, radius, mPaint);
             }
             mPaint.setStyle(style);
@@ -1337,7 +1334,8 @@ public class LocationView extends View implements MultiTouchObjectCanvas<Object>
 	        if(mService != null && mPointProjection == null) {
 		        int x = (int)(mOrigin.getOffsetX(mGpsParams.getLongitude()));
 		        int y = (int)(mOrigin.getOffsetY(mGpsParams.getLatitude()));
-		        float pixPerNm = mMovement.getNMPerLatitude(mScale);
+                // XXX: ZK fix this. Instead of 1, use actual NM
+		        float pixPerNm = mOrigin.getPixelsInNmAtLatitude(1, mGpsParams.getLatitude());
 		      	mService.getEdgeTape().draw(canvas, mScale, pixPerNm, x, y, 
 		      			(int) mService.getInfoLines().getHeight(), getWidth(), getHeight());
 	        }
@@ -1652,7 +1650,6 @@ public class LocationView extends View implements MultiTouchObjectCanvas<Object>
                 t.centerTile = centerTile;
                 t.gpsTile = gpsTile;
                 t.offsets = offsets;
-                t.p = p;
                 t.chart = "TODO"; //XXX: Find chart name
                 t.factor = factor;
                 
@@ -2188,7 +2185,6 @@ public class LocationView extends View implements MultiTouchObjectCanvas<Object>
         
         private String chart;
 		private double offsets[];
-        private double p[];
         private int movex;
         private int movey;
         private float factor;
@@ -2231,7 +2227,7 @@ public class LocationView extends View implements MultiTouchObjectCanvas<Object>
 	             * And pan
 	             */
 	            mPan.setTileMove(t.movex, t.movey);
-	            mMovement = new Movement(t.offsets, t.p);
+	            mMovement = new Movement(t.offsets);
 	            mService.setMovement(mMovement);
 	            mMacro = mScale.getMacroFactor();
 	            mScale.updateMacro();
