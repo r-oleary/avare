@@ -13,11 +13,8 @@ Redistribution and use in source and binary forms, with or without modification,
 package com.ds.avare.position;
 
 
-import android.util.Log;
-
 import com.ds.avare.gps.GpsParams;
 import com.ds.avare.shapes.Tile;
-import com.ds.avare.utils.BitmapHolder;
 
 /**
  * A class that keeps lon/lat pair of what is shown.
@@ -27,11 +24,11 @@ import com.ds.avare.utils.BitmapHolder;
 public class Origin {
 
     // latitude and longitude of center of screen
-    private double mLonC;
-    private double mLatC;
+    private double mLonScreenCenter;
+    private double mLatScreenCenter;
     // latitude and longitude of upper left of screen
-    private double mLonL;
-    private double mLatU;
+    private double mLonScreenLeft;
+    private double mLatScreenTop;
     private double mZoom;
     private double mScale;
 
@@ -51,13 +48,12 @@ public class Origin {
         if(currentTile == null) {
             return;
         }
-        mScale = 1.0 / (scale.getScaleFactor() * scale.getMacroFactor());
+        mScale = scale.getScaleFactor();
         mZoom = currentTile.getZoom();
-        mLatC = Epsg900913.getLatitudeOf(-pan.getMoveY() * mScale, params.getLatitude(), mZoom);
-        mLonC = Epsg900913.getLongitudeOf(-pan.getMoveX() * mScale, params.getLongitude(), mZoom);
-        mLatU = Epsg900913.getLatitudeOf(-(pan.getMoveY() + height / 2) * mScale, params.getLatitude(), mZoom);
-        mLonL = Epsg900913.getLongitudeOf(-(pan.getMoveX() + width / 2) * mScale, params.getLongitude(), mZoom);
-        Log.d("-------------", ""  + mLatU + " " + mLatC + " " + mScale);
+        mLatScreenCenter = Epsg900913.getLatitudeOf(-pan.getMoveY(), params.getLatitude(), mZoom);
+        mLonScreenCenter = Epsg900913.getLongitudeOf(-pan.getMoveX(), params.getLongitude(), mZoom);
+        mLatScreenTop = Epsg900913.getLatitudeOf(-pan.getMoveY() - height / 2 / mScale, params.getLatitude(), mZoom);
+        mLonScreenLeft = Epsg900913.getLongitudeOf(-pan.getMoveX() - width / 2 / mScale, params.getLongitude(), mZoom);
     }
 
     /**
@@ -65,7 +61,7 @@ public class Origin {
      * @return
      */
     public double getLongitudeOf(double of) {
-        return Epsg900913.getLongitudeOf(of, mLonL, mZoom);
+        return Epsg900913.getLongitudeOf(of / mScale, mLonScreenLeft, mZoom);
     }
     
     /**
@@ -73,21 +69,21 @@ public class Origin {
      * @return
      */
     public double getLatitudeOf(double of) {
-        return Epsg900913.getLatitudeOf(of, mLatU, mZoom);
+        return Epsg900913.getLatitudeOf(of / mScale, mLatScreenTop, mZoom);
     }
 
     /**
      * double The X offset on the screen of the given longitude
      */
     public double getOffsetX(double lon) {
-        return Epsg900913.getOffsetX(mLonL, lon, mZoom);
+        return Epsg900913.getOffsetX(mLonScreenLeft, lon, mZoom) * mScale;
     }
 
     /**
      * double The Y offset on the screen of the given latitude
      */
     public double getOffsetY(double lat) {
-        return Epsg900913.getOffsetY(mLatU, lat, mZoom);
+        return Epsg900913.getOffsetY(mLatScreenTop, lat, mZoom) * mScale;
     }
 
     /**
@@ -95,7 +91,7 @@ public class Origin {
      * @return
      */
     public double getLongitudeCenter() {
-        return mLonC;
+        return mLonScreenCenter;
     }
 
     /**
@@ -103,6 +99,6 @@ public class Origin {
      * @return
      */
     public double getLatitudeCenter() {
-        return mLatC;
+        return mLatScreenCenter;
     }
 }
