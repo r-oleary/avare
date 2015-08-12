@@ -865,7 +865,15 @@ public class Preferences {
     public boolean showCAPGrids() {
         return mPref.getBoolean(mContext.getString(R.string.CAPGrid), false);
     }
-    
+
+    /**
+     *
+     * @return
+     */
+    public boolean showTips() {
+        return mPref.getBoolean(mContext.getString(R.string.prefTip), true);
+    }
+
     /**
      * 
      * @return

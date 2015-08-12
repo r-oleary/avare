@@ -1103,5 +1103,9 @@ Redistribution and use in source and binary forms, with or without modification,
         <item>Jet-A</item>
         <item>Mogas</item>
     </string-array>
-    
+
+    <string-array name="Tips">
+        <item>If you upgraded the app from version 6.0.9 or below, you MUST update all your charts and databases even if they show as current.</item>
+    </string-array>
+
 </resources>

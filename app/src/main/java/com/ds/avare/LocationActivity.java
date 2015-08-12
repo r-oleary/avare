@@ -36,6 +36,7 @@ import com.ds.avare.storage.StringPreference;
 import com.ds.avare.touch.GestureInterface;
 import com.ds.avare.touch.LongTouchDestination;
 import com.ds.avare.utils.Helper;
+import com.ds.avare.utils.Tips;
 import com.ds.avare.utils.VerticalSeekBar;
 import com.ds.avare.utils.InfoLines.InfoLineFieldLoc;
 import com.ds.avare.utils.NetworkHelper;
@@ -109,7 +110,12 @@ public class LocationActivity extends Activity implements Observer {
      * Shows warning about GPS
      */
     private AlertDialog mGpsWarnDialog;
-    
+
+    /**
+     * Version related warnings
+     */
+    private AlertDialog mWarnDialog;
+
     private Button mDestButton;
     private Button mCenterButton;
     private Button mDrawClearButton;
@@ -884,7 +890,27 @@ public class LocationActivity extends Activity implements Observer {
             });
             mGpsWarnDialog.show();        
         }
-        
+
+                /*
+         * Throw this in case GPS is disabled.
+         */
+        if(mPref.showTips()) {
+            mWarnDialog = new AlertDialog.Builder(LocationActivity.this).create();
+            mWarnDialog.setTitle(getString(R.string.Tip));
+            mWarnDialog.setMessage(Tips.getTip(getApplicationContext()));
+            mWarnDialog.setCancelable(false);
+            mWarnDialog.setCanceledOnTouchOutside(false);
+            mWarnDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.OK), new DialogInterface.OnClickListener() {
+                /* (non-Javadoc)
+                 * @see android.content.DialogInterface.OnClickListener#onClick(android.content.DialogInterface, int)
+                 */
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            mWarnDialog.show();
+        }
+
         /*
          * Check if this was sent from Google Maps
          */
@@ -1265,7 +1291,15 @@ public class LocationActivity extends Activity implements Observer {
             catch (Exception e) {
             }
         }
-        
+
+        if(null != mWarnDialog) {
+            try {
+                mWarnDialog.dismiss();
+            }
+            catch (Exception e) {
+            }
+        }
+
         if(null != mAlertDialogExit) {
             try {
                 mAlertDialogExit.dismiss();

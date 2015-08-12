@@ -134,7 +134,7 @@ public class Download {
         private void sendFailure() {
             Message m = mHandler.obtainMessage(Download.FAILED, Download.this);
             Bundle b = new Bundle();
-            b.putString("code", mCode);
+            b.putString("code", mName + ", " + mCode);
             m.setData(b);
             mHandler.sendMessage(m);            
         }
