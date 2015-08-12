@@ -1309,7 +1309,6 @@ public class LocationView extends View implements MultiTouchObjectCanvas<Object>
 	        if(mService != null && mPointProjection == null) {
 		        int x = (int)(mOrigin.getOffsetX(mGpsParams.getLongitude()));
 		        int y = (int)(mOrigin.getOffsetY(mGpsParams.getLatitude()));
-                // XXX: ZK fix this. Instead of 1, use actual NM
 		        float pixPerNm = mOrigin.getPixelsInNmAtLatitude(1, mGpsParams.getLatitude());
 		      	mService.getEdgeTape().draw(canvas, mScale, pixPerNm, x, y, 
 		      			(int) mService.getInfoLines().getHeight(), getWidth(), getHeight());
