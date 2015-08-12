@@ -172,8 +172,6 @@ public class LocationView extends View implements MultiTouchObjectCanvas<Object>
     
     private Typeface                    mFace;
     
-    private String                      mOnChart;
-    
     /**
      * These are longitude and latitude at top left (0,0)
      */
@@ -247,7 +245,6 @@ public class LocationView extends View implements MultiTouchObjectCanvas<Object>
         mOrigin = new Origin();
         mMovement = new Movement();
         mErrorStatus = null;
-        mOnChart = null;
         mTrackUp = false;
         mMacro = 1;
         mDragPlanPoint = -1;
@@ -753,7 +750,7 @@ public class LocationView extends View implements MultiTouchObjectCanvas<Object>
             if(empty >= tn) {
                 mMsgPaint.setColor(Color.WHITE);
                 mService.getShadowedText().draw(canvas, mMsgPaint,
-                        mContext.getString(R.string.MissingMaps) + "- " + mOnChart, 
+                        mContext.getString(R.string.MissingMaps),
                         Color.RED, getWidth() / 2, getHeight() / 2);
             }
         }
@@ -1628,7 +1625,6 @@ public class LocationView extends View implements MultiTouchObjectCanvas<Object>
                 t.centerTile = centerTile;
                 t.gpsTile = gpsTile;
                 t.offsets = offsets;
-                t.chart = "TODO"; //XXX: Find chart name
                 t.factor = factor;
                 
                 Message m = mHandler.obtainMessage();
@@ -2199,8 +2195,6 @@ public class LocationView extends View implements MultiTouchObjectCanvas<Object>
 	            mPan.setMove((float)(mPan.getMoveX() * t.factor), (float)(mPan.getMoveY() * t.factor));
 
                 mGpsTile = t.gpsTile;
-	            mOnChart = t.chart;
-	
 	            /*
 	             * And pan
 	             */

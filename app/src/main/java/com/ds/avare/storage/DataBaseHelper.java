@@ -151,7 +151,7 @@ public class DataBaseHelper  {
      */
     public DataBaseHelper(Context context) {
         mPref = new Preferences(context);
-        mUsers = mUsersWeather = mUsersPlates = mUsersGeoPlates = mUsersProcedures = mUsersFuel = mUsersRatings = 0;
+        mUsers = mUsersWeather = mUsersPlates = mUsersGeoPlates = mUsersTileName = mUsersProcedures = mUsersFuel = mUsersRatings = 0;
         mContext = context;
     }
 

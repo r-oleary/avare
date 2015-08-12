@@ -282,6 +282,15 @@ public class Tile {
     }
 
     /**
+     * @return Name of the tile for db zip name
+     */
+    public String getTileDbName() {
+        // form type/zoom/col/row
+        String name = mChartIndex + "/" + (int)mZoom +  "/" + getNeighborCol(0) + "/" + getNeighborRow(0);
+        return(name);
+    }
+
+    /**
      * @return Name of the tile
      */
     public String getName() {
